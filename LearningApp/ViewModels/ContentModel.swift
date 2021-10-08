@@ -8,8 +8,14 @@
 import Foundation
 
 class ContentModel: ObservableObject {
-    // Stores our modules
+    // Stores our list of modules
     @Published var modules = [Module]() // Initialize into empty list of Modules, which we load later
+    
+    // Current module
+    @Published var currentModule: Module?
+    var currentModuleIndex = 0
+    
+    
     
     // Make styleData property with nill allowed
     var styleData: Data?
@@ -17,6 +23,8 @@ class ContentModel: ObservableObject {
     init() {
         getLocalData()
     }
+    
+    // MARK: - Data Methods
     
     func getLocalData() {
         // Parses the local JSON file
@@ -57,4 +65,30 @@ class ContentModel: ObservableObject {
         }
     }
     
+    // MARK: - Module navigation methods
+    
+    /*
+     Sets the current module, and finds the index for this module as well
+     */
+    func beginModule(_ moduleid: Int) {
+        
+        // Find index for this module ID
+        for index in 0..<modules.count {
+            
+            // Loop through our list of modules to see, which index in the modules we belong
+            if modules[index].id == moduleid {
+                // Set the current module index to this matching module
+                currentModuleIndex = index
+                
+                // Break, because we found what we needed
+                break
+            }
+            
+            
+        }
+        
+        // Set the current module
+        currentModule = modules[currentModuleIndex]
+        
+    }
 }
