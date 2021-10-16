@@ -15,9 +15,11 @@ class ContentModel: ObservableObject {
     @Published var currentModule: Module?
     var currentModuleIndex = 0
     
+    // Current lesson
+    @Published var currentLesson: Lesson? // @Published notifies any views that rely on this property that it changed
+    var currentLessonIndex = 0
     
-    
-    // Make styleData property with nill allowed
+    // Make styleData property with nill allowed. This tracks our CSS/ HTML styles
     var styleData: Data?
     
     init() {
@@ -91,4 +93,54 @@ class ContentModel: ObservableObject {
         currentModule = modules[currentModuleIndex]
         
     }
+    
+    /*
+     Sets the currentLesson/ lessonIndex that we use to track in the views
+     */
+    func beginLesson(_ lessonIndex:Int) {
+        
+        // Check that the lesson index is in the range of module lessons
+        if lessonIndex < currentModule!.content.lessons.count {
+            
+            // If it is within the range, then we set the current lesson
+            currentLessonIndex = lessonIndex
+        }
+        else {
+            currentLessonIndex = 0
+        }
+        
+        // Set the current lesson
+        currentLesson = currentModule!.content.lessons[currentLessonIndex]
+    }
+    
+    /*
+     Advances to the next lesson, if there is one
+     */
+    func nextLesson() {
+        // Advance the lesson
+        currentLessonIndex += 1
+        
+        // Check that it is within range
+        if currentLessonIndex < currentModule!.content.lessons.count {
+            // Set the current lesson
+            currentLesson = currentModule!.content.lessons[currentLessonIndex]
+        }
+        else {
+            // Else if it is out of bounds, we reset the sate
+            currentLessonIndex = 0
+            currentLesson = nil
+        }
+        
+        
+    }
+    
+    /*
+     Determines whether or not there is a next lesson
+     */
+    func hasNextLesson() -> Bool {
+        // If there is still another lesson, then we return true/ false here 
+        return (currentLessonIndex + 1 < currentModule!.content.lessons.count)
+        
+    }
+    
 }

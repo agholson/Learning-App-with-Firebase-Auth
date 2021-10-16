@@ -24,11 +24,20 @@ struct ContentView: View {
         
                     // Loop through the lessons in our module
                     ForEach(0..<model.currentModule!.content.lessons.count) { index in
-                        
-                        ContentViewRow(index: index)
+                        NavigationLink(
+                            destination:
+                                ContentDetailView()
+                                    .onAppear(perform: {
+                                        model.beginLesson(index)
+                                    }),
+                            label: {
+                                ContentViewRow(index: index)
+                            })
+                        // in XCode 13 add a .navigationViewStyle(.stack) modifier
                     }
                 }
             }
+            .accentColor(.black)
             .padding()
             // If no module category set, then place this category as blank
             .navigationTitle("Learn \(model.currentModule?.category ?? "")")
