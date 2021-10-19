@@ -19,6 +19,9 @@ class ContentModel: ObservableObject {
     @Published var currentLesson: Lesson? // @Published notifies any views that rely on this property that it changed
     var currentLessonIndex = 0
     
+    // Current lesson explanation
+    @Published var lessonDescription = NSAttributedString()
+    
     // Make styleData property with nill allowed. This tracks our CSS/ HTML styles
     var styleData: Data?
     
@@ -111,6 +114,9 @@ class ContentModel: ObservableObject {
         
         // Set the current lesson
         currentLesson = currentModule!.content.lessons[currentLessonIndex]
+        // Add the HTML/ CSS styling explanation
+        lessonDescription = addStyling(currentLesson!.explanation)
+        
     }
     
     /*
@@ -124,13 +130,14 @@ class ContentModel: ObservableObject {
         if currentLessonIndex < currentModule!.content.lessons.count {
             // Set the current lesson
             currentLesson = currentModule!.content.lessons[currentLessonIndex]
+            // Update the description
+            lessonDescription = addStyling(currentLesson!.explanation)
         }
         else {
             // Else if it is out of bounds, we reset the sate
             currentLessonIndex = 0
             currentLesson = nil
         }
-        
         
     }
     
@@ -140,6 +147,43 @@ class ContentModel: ObservableObject {
     func hasNextLesson() -> Bool {
         // If there is still another lesson, then we return true/ false here 
         return (currentLessonIndex + 1 < currentModule!.content.lessons.count)
+        
+    }
+    
+    // MARK: - Code Styling
+    
+    private func addStyling(_ htmlString: String) -> NSAttributedString {
+        
+        var resultString = NSAttributedString()
+        var data = Data()
+        
+        // Add the styling data
+        if styleData != nil {
+            data.append(self.styleData!)
+        }
+        
+        // Add the HTML data
+        data.append(Data(htmlString.utf8))
+        
+        // Convert to attributed string
+        // Technique 1 - use if we do not care to handle
+        if let attributedString = try? NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
+            // If above fails, then this does not execute
+            resultString = attributedString
+        }
+        
+        // Technique 2
+//        do {
+//            // If this fails, then it throws an error we catch down below
+//            let attributedString = try NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
+//
+//            resultString = attributedString
+//        }
+//        catch {
+//            print("Could not parse HTML into attributed string")
+//        }
+        
+        return resultString
         
     }
     

@@ -25,8 +25,8 @@ struct ContentDetailView: View {
                     .cornerRadius(10)
             }
             
-            // TODO: Description
-//            Text(lesson?.explanation ?? "")
+            // MARK: - UIKit Description with HTML
+            CodeTextView()
             
             // MARK: - Green Next Lesson Button
             // Show next lesson button, only if there is a next lesson
@@ -54,6 +54,7 @@ struct ContentDetailView: View {
             }
         }
             .padding()
+            .navigationBarTitle(lesson?.title ?? "") // Sets the title or empty quote, if blank
     }
 }
 
