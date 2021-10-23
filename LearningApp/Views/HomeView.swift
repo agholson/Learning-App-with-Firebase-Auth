@@ -45,9 +45,6 @@ struct HomeView: View {
                                          
                                     })
                                 
-                                
-                               
-                                
                                 // Test card
                                 HomeViewRow(image: module.test.image, title: "\(module.category) Test", description: module.test.description, count: "\(module.test.questions.count) questions", time: module.test.time)
                             }
@@ -61,6 +58,7 @@ struct HomeView: View {
             }
             .navigationTitle("Get Started")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
