@@ -39,14 +39,32 @@ struct ContentDetailView: View {
                 }, label: {
                     
                     ZStack {
-                        Rectangle()
+                        RectangleCard(color: Color.green)
                             .frame(height: 48)
-                            .foregroundColor(.green)
-                            .cornerRadius(10)
-                            .shadow(radius: 5)
                         
                         // Display the next lesson with its title
                         Text("Next Lesson: \(model.currentModule!.content.lessons[model.currentLessonIndex + 1].title)")
+                            .bold()
+                            .foregroundColor(.white)
+                    }
+                })
+            }
+            // MARK: - Completed Lessons Button
+            else {
+                // Show the completed lessons Button to bounce back out
+                Button(action: {
+                    
+                    // Set this to nil, so we bounce back to the home screen
+                    model.currentContentSelected = nil
+                    
+                }, label: {
+                    
+                    ZStack {
+                        RectangleCard(color: Color.green)
+                            .frame(height: 48)
+                        
+                        // Display the next lesson with its title
+                        Text("Complete")
                             .bold()
                             .foregroundColor(.white)
                     }

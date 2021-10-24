@@ -22,6 +22,9 @@ class ContentModel: ObservableObject {
     // Current lesson explanation
     @Published var lessonDescription = NSAttributedString()
     
+    // Tracks tag for current selected content and tag
+    @Published var currentContentSelected: Int?
+    
     // Make styleData property with nill allowed. This tracks our CSS/ HTML styles
     var styleData: Data?
     

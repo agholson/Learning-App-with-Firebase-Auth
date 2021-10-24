@@ -29,7 +29,7 @@ struct HomeView: View {
                         ForEach(model.modules) { module in
                             
                             VStack(spacing: 20) {
-                            
+                                
                                 // Link to the next view
                                 NavigationLink(
                                     // When the user clicks this, we execute the code to determine our current module
@@ -37,12 +37,13 @@ struct HomeView: View {
                                         .onAppear(perform: {
                                             model.beginModule(module.id)
                                         }),
+                                    tag: module.id,
+                                    selection: $model.currentContentSelected, // Make binding here that matches tag
                                     label: {
-                                        
                                         // If user clicks on the learning card, then that's the destination
                                         // Learning card
                                         HomeViewRow(image: module.content.image, title: "Learn \(module.category)", description: module.content.description, count: "\(module.content.lessons.count) lessons", time: module.content.time)
-                                         
+                                        
                                     })
                                 
                                 // Test card

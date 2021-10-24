@@ -22,6 +22,7 @@
 		417E14E627010DFC00E1A4A6 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417E14E527010DFC00E1A4A6 /* Models.swift */; };
 		417E14E8270687E600E1A4A6 /* HomeViewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417E14E7270687E600E1A4A6 /* HomeViewRow.swift */; };
 		41832093270BB1B9007E20F0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41832092270BB1B9007E20F0 /* ContentView.swift */; };
+		41EC6B6D2725C51100DFCB47 /* RectangleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EC6B6C2725C51100DFCB47 /* RectangleCard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		417E14E527010DFC00E1A4A6 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		417E14E7270687E600E1A4A6 /* HomeViewRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewRow.swift; sourceTree = "<group>"; };
 		41832092270BB1B9007E20F0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		41EC6B6C2725C51100DFCB47 /* RectangleCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleCard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				4170E64A270FE2C600D44C28 /* ContentViewRow.swift */,
 				41436F42271B1FAA0096DBC0 /* ContentDetailView.swift */,
 				41436F81271B7E390096DBC0 /* CodeTextView.swift */,
+				41EC6B6C2725C51100DFCB47 /* RectangleCard.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -231,6 +234,7 @@
 				41436F82271B7E390096DBC0 /* CodeTextView.swift in Sources */,
 				412E90A726FD5E7800909955 /* ContentModel.swift in Sources */,
 				417E14E627010DFC00E1A4A6 /* Models.swift in Sources */,
+				41EC6B6D2725C51100DFCB47 /* RectangleCard.swift in Sources */,
 				41436F48271B247C0096DBC0 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
