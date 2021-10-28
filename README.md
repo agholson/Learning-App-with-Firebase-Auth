@@ -1,5 +1,5 @@
 # Learning App
-Displays how to make a learning app with Swift, iOS's programming language.
+Displays how to make a learning app with Swift, iOS's programming language. Based on module five in the fantastic codewithchris.com iOS Foundations course.
 
 ## Special Styling
 The JSON data combines styles from HTML/ CSS into something useable in iOS/ Swift. From [Module 
