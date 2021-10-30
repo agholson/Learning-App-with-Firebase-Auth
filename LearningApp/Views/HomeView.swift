@@ -46,14 +46,28 @@ struct HomeView: View {
                                         
                                     })
                                 
+                                NavigationLink(
+                                    // When the user clicks this, we execute the code to determine our current module
+                                    destination: TestView()
+                                        .onAppear(perform: {
+                                            model.beginTest(module.id)
+                                        }),
+                                    tag: module.id,
+                                    selection: $model.currentTestSelected, // Make binding here that matches tag
+                                    label: {
+                                        HomeViewRow(image: module.test.image, title: "\(module.category) Test", description: module.test.description, count: "\(module.test.questions.count) questions", time: module.test.time)
+                                        
+                                    })
                                 // MARK: - Test card
-                                NavigationLink(destination: TestView(), tag: module.id, selection: $model.currentTestSelected) {
-                                    
-                                    HomeViewRow(image: module.test.image, title: "\(module.category) Test", description: module.test.description, count: "\(module.test.questions.count) questions", time: module.test.time)
-                                }
+//                                NavigationLink(destination: TestView().onAppear(perform: {
+//                                    model.beginTest(module.id)
+//                                }), tag: module.id, selection: $model.currentTestSelected) {
+//
+//                                    HomeViewRow(image: module.test.image, title: "\(module.category) Test", description: module.test.description, count: "\(module.test.questions.count) questions", time: module.test.time)
+//                                }
                                 
                                
-                                
+                                // Implemented to prevent bug in iOS 14.5
                                 NavigationLink(destination: EmptyView()) {
                                     EmptyView()
                                 }
