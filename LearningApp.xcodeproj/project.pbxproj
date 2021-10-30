@@ -23,6 +23,7 @@
 		417E14E8270687E600E1A4A6 /* HomeViewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 417E14E7270687E600E1A4A6 /* HomeViewRow.swift */; };
 		41832093270BB1B9007E20F0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41832092270BB1B9007E20F0 /* ContentView.swift */; };
 		41EC6B6D2725C51100DFCB47 /* RectangleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EC6B6C2725C51100DFCB47 /* RectangleCard.swift */; };
+		41F266C4272DD76B0012F7E4 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F266C3272DD76B0012F7E4 /* TestView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		417E14E7270687E600E1A4A6 /* HomeViewRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewRow.swift; sourceTree = "<group>"; };
 		41832092270BB1B9007E20F0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		41EC6B6C2725C51100DFCB47 /* RectangleCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleCard.swift; sourceTree = "<group>"; };
+		41F266C3272DD76B0012F7E4 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 				41832092270BB1B9007E20F0 /* ContentView.swift */,
 				4170E64A270FE2C600D44C28 /* ContentViewRow.swift */,
 				41436F42271B1FAA0096DBC0 /* ContentDetailView.swift */,
+				41F266C3272DD76B0012F7E4 /* TestView.swift */,
 				41436F81271B7E390096DBC0 /* CodeTextView.swift */,
 				41EC6B6C2725C51100DFCB47 /* RectangleCard.swift */,
 			);
@@ -225,6 +228,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41F266C4272DD76B0012F7E4 /* TestView.swift in Sources */,
 				412E909526FD5D4900909955 /* HomeView.swift in Sources */,
 				417E14E8270687E600E1A4A6 /* HomeViewRow.swift in Sources */,
 				41832093270BB1B9007E20F0 /* ContentView.swift in Sources */,
