@@ -22,6 +22,7 @@ struct TestView: View {
                 Text("Question \(model.currentQuestionIndex + 1) of \(model.currentModule?.test.questions.count ?? 0)")
                 
                 // Question
+//                CodeTextView()
                 
                 // Button
                 
@@ -29,6 +30,10 @@ struct TestView: View {
             }
             .navigationBarTitle("\(model.currentModule?.category ?? "") Test")
             
+        }
+        else {
+            // Shows, if did not load view
+            ProgressView()
         }
         
     }

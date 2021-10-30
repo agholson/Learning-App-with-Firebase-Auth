@@ -46,6 +46,7 @@ struct HomeView: View {
                                         
                                     })
                                 
+                                // MARK: - Test card
                                 NavigationLink(
                                     // When the user clicks this, we execute the code to determine our current module
                                     destination: TestView()
@@ -58,20 +59,16 @@ struct HomeView: View {
                                         HomeViewRow(image: module.test.image, title: "\(module.category) Test", description: module.test.description, count: "\(module.test.questions.count) questions", time: module.test.time)
                                         
                                     })
-                                // MARK: - Test card
-//                                NavigationLink(destination: TestView().onAppear(perform: {
-//                                    model.beginTest(module.id)
-//                                }), tag: module.id, selection: $model.currentTestSelected) {
-//
+//                                NavigationLink(
+//                                    tag: module.id,
+//                                    selection: $model.currentTestSelected,
+//                                    destination:
+//                                        TestView()
+//                                        .onAppear(perform: model.beginTest(module.id))
+//                                ) {
 //                                    HomeViewRow(image: module.test.image, title: "\(module.category) Test", description: module.test.description, count: "\(module.test.questions.count) questions", time: module.test.time)
 //                                }
                                 
-                               
-                                // Implemented to prevent bug in iOS 14.5
-                                NavigationLink(destination: EmptyView()) {
-                                    EmptyView()
-                                }
-                               
                                 
                             }
                         }
