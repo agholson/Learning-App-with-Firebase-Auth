@@ -22,7 +22,7 @@ struct TestView: View {
                 Text("Question \(model.currentQuestionIndex + 1) of \(model.currentModule?.test.questions.count ?? 0)")
                 
                 // Question
-//                CodeTextView()
+                CodeTextView()
                 
                 // Button
                 
@@ -32,7 +32,7 @@ struct TestView: View {
             
         }
         else {
-            // Shows, if did not load view
+            // Triggers the .onAppear in the other view
             ProgressView()
         }
         

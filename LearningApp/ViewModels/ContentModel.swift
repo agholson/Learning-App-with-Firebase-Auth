@@ -24,7 +24,7 @@ class ContentModel: ObservableObject {
     var currentQuestionIndex = 0
     
     // Current lesson explanation
-    @Published var lessonDescription = NSAttributedString()
+    @Published var codeText = NSAttributedString()
     
     // Tracks tag for current selected content and test
     @Published var currentContentSelected: Int?
@@ -124,7 +124,7 @@ class ContentModel: ObservableObject {
         // Set the current lesson
         currentLesson = currentModule!.content.lessons[currentLessonIndex]
         // Add the HTML/ CSS styling explanation
-        lessonDescription = addStyling(currentLesson!.explanation)
+        codeText = addStyling(currentLesson!.explanation)
         
     }
     
@@ -140,7 +140,7 @@ class ContentModel: ObservableObject {
             // Set the current lesson
             currentLesson = currentModule!.content.lessons[currentLessonIndex]
             // Update the description
-            lessonDescription = addStyling(currentLesson!.explanation)
+            codeText = addStyling(currentLesson!.explanation)
         }
         else {
             // Else if it is out of bounds, we reset the sate
@@ -173,6 +173,9 @@ class ContentModel: ObservableObject {
         // If there are questions, set the current question to the first one
         if currentModule?.test.questions.count ?? 0 > 0 {
             currentQuestion = currentModule?.test.questions[currentQuestionIndex]
+            
+            // Set the codeText, which also represents our question's content
+            codeText = addStyling(currentQuestion!.content) // Takes HTML string/ styling and adds it
         }
         
         
