@@ -178,6 +178,33 @@ class ContentModel: ObservableObject {
             codeText = addStyling(currentQuestion!.content) // Takes HTML string/ styling and adds it
         }
         
+    }
+    
+    /*
+     Proceeds to the next test question, if there was one available
+     */
+    func nextQuestion() {
+        
+        // Advance the currentQuestionIndex
+        currentQuestionIndex += 1
+        
+        // Check if there's still another question
+        if currentQuestionIndex < currentModule!.test.questions.count {
+            // Set the current question
+            currentQuestion = currentModule!.test.questions[currentQuestionIndex]
+            
+            // Update the description for the current question
+            codeText = addStyling(currentQuestion!.content)
+            
+        }
+        else {
+            // Else reset the current test properties
+            currentQuestionIndex = 0
+            
+            // Set this to nil, so we do not display any questions
+            currentQuestion = nil
+        }
+        
         
     }
     

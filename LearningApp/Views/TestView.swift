@@ -100,13 +100,31 @@ struct TestView: View {
                 // MARK: - Submit Button
                 Button {
                     
-                    // Track that the person submitted the answer, so they cannot change it any more
-                    submitted = true
-                    
-                    // Check the answer and increment the number, if correct
-                    if selectedAnswerIndex == model.currentQuestion!.correctIndex {
-                        numCorrect += 1
+                    if submitted {
+                        // Change the label to display the next button instead of submit
+                        
+                        model.nextQuestion()
+                        
+                        // Reset the current view's properties
+                        selectedAnswerIndex = nil
+                        
+                        submitted = false
+                        
+                        
                     }
+                    // Submit the answer
+                    else {
+                        
+                        // Track that the person submitted the answer, so they cannot change it any more
+                        submitted = true
+                        
+                        // Check the answer and increment the number, if correct
+                        if selectedAnswerIndex == model.currentQuestion!.correctIndex {
+                            numCorrect += 1
+                        }
+                        
+                    }
+                   
                     
                 } label: {
                     
@@ -114,7 +132,8 @@ struct TestView: View {
                         RectangleCard(color: .green)
                             .frame(height: 48)
                         
-                        Text("Submit")
+                        // If submitted, then we show the next question button, else the submit button
+                        Text(buttonText)
                             .foregroundColor(.white)
                             .bold()
                     }
@@ -133,6 +152,28 @@ struct TestView: View {
             ProgressView()
         }
         
+    }
+    
+    /*
+     Computed property displays whether to submit, next question, or finished depending on the current state of the views
+     */
+    var buttonText:String {
+        // Check if answer submitted
+        if submitted {
+            
+            // If it is the last question, then make this say finish
+            if model.currentQuestionIndex + 1 == model.currentModule?.test.questions.count ?? 0 {
+                return "Finish"
+            }
+            // Else show the submit button
+            else {
+                return "Next question"
+            }
+        }
+        // Else means user has not submitted
+        else {
+            return "Submit"
+        }
     }
 }
 
