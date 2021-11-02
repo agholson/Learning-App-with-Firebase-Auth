@@ -34,7 +34,7 @@ struct TestView: View {
                 CodeTextView()
                     .padding(.horizontal, 18)
                 
-                // Answers
+                // MARK: - Answers
                 ScrollView {
                     
                     VStack {
@@ -148,8 +148,9 @@ struct TestView: View {
             
         }
         else {
+            // MARK: - Final Results View
             // Triggers the .onAppear in the other view
-            ProgressView()
+            TestResultView(numCorrect: numCorrect)
         }
         
     }
