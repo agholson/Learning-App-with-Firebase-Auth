@@ -1,6 +1,14 @@
 # Learning App
 Displays how to make a learning app with Swift, iOS's programming language. Based on module five in the fantastic codewithchris.com iOS Foundations course.
 
+## App Features
+- Dynamic screens that track state throughout app with `EnvironmentObject`
+- Parses JSON data
+- Displays HTML + CSS styled text as an `NSAttributedString`
+- Fetches JSON data from a website
+- Displays videos from external websites within the app
+- Grades students for right answers defined in the JSON configuration file
+
 ## Special Styling
 The JSON data combines styles from HTML/ CSS into something useable in iOS/ Swift. From [Module 
 5 Lesson 3 of Code with Chris](https://learn.codewithchris.com/courses/take/foundations/lessons/22274485-lesson-3-parsing-the-json-data)
