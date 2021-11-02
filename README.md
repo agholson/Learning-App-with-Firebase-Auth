@@ -9,6 +9,38 @@ Displays how to make a learning app with Swift, iOS's programming language. Base
 - Displays videos from external websites within the app
 - Grades students for right answers defined in the JSON configuration file
 
+## Design
+### HomeView
+This view displays a list of learning modules. Each learning module contains a learning and test component. 
+The learning component contains a list of lessons with a video for each lesson as well as formatted
+HTML/ CSS text. The test component, instead contains a list of test questions.
+
+![HomeView](img/HomeView.png)
+
+### ContentView
+The ContentView displays the list of lessons. 
+![List of Lessons](img/ListOfLessons.png)
+
+### ContentDetailView
+This displays the lesson detail as well as a video, and specially formatted text in a ScrollView. 
+The user can go to the next lesson with the button at the bottom. It will also pop the user back to
+the HomeView, if there are no more lessons left.
+
+![ContentDetailView](img/ContentDetailView.png)
+
+### TestView
+This displays a single multiple choice question. The screen will show in green, or red, once the 
+user submits his or her answer to the question.
+![TestQuestion](img/TestQuestion.png)
+![Answered test question](img/TestQuestionAnswered.png)
+
+### TestResultView
+This displays the results of the quiz. It will display three types of text, depending on the score
+the student earned during the quiz.
+
+![Quiz results](img/TestResultView)
+
+
 ## Special Styling
 The JSON data combines styles from HTML/ CSS into something useable in iOS/ Swift. From [Module 
 5 Lesson 3 of Code with Chris](https://learn.codewithchris.com/courses/take/foundations/lessons/22274485-lesson-3-parsing-the-json-data)
