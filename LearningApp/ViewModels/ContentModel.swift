@@ -35,7 +35,11 @@ class ContentModel: ObservableObject {
     var styleData: Data?
     
     init() {
+        // Parse the local data, and append to the modules property
         getLocalData()
+        
+        // Also call the remote data
+        getRemoteData()
     }
     
     // MARK: - Data Methods
@@ -78,6 +82,59 @@ class ContentModel: ObservableObject {
             print("Couldn't parse style data")
         }
     }
+    
+    
+    func getRemoteData() {
+        
+        // String path for content
+        let urlString = "https://raw.githubusercontent.com/agholson/Learning-App/master/LessonConfigData/module2.json"
+        
+        // Create a URL object that returns an optional URL
+        let url = URL(string: urlString)
+        
+        // Check that the URL exists
+        guard url != nil else {
+            // Could not create the URL
+            return
+        }
+        
+        // Create a URLRequest object - where we force unwrap our URL object, because we already checked it exists
+        let request = URLRequest(url: url!)
+        
+        // Create a session based on the single session object for each app
+        let session = URLSession.shared
+        
+        // Raw data fetched in data, response contains more details, while error contains any errors
+        let dataTask = session.dataTask(with: request) { data, response, error in
+            
+            // Check if it hit any errors
+            guard error == nil else {
+                return
+            }
+            
+            // Handle the response
+            // Create a JSON decoder
+            do {
+                let decoder = JSONDecoder()
+                
+                // Decode - can safely force unrwapp, because checked for errors above
+                let modules = try decoder.decode([Module].self, from: data!)
+                
+                // Append parsed modules into modules property
+                self.modules += modules
+                
+            }
+            catch {
+                // Could not parse the JSON
+            }
+            
+        }
+        
+        // Issue GET request, then parses it in the handler above
+        dataTask.resume()
+        
+    }
+    
     
     // MARK: - Module navigation methods
     
