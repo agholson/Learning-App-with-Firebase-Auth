@@ -82,8 +82,22 @@ struct HomeView: View {
                 }
             }
             .navigationTitle("Get Started")
+            // Executes this code as soon as value changed, after user returns from a nested view. Prevents a bug with on-loads from occurring
+            .onChange(of: model.currentContentSelected) { changedValue in
+                if changedValue == nil {
+                    model.currentModule = nil
+                }
+            }
+            .onChange(of: model.currentTestSelected) { changedValue in
+                // If the test selected is nil, then make sure to set currentModule to nil
+                if changedValue == nil {
+                    model.currentModule = nil
+                }
+            }
+            
         }
         .navigationViewStyle(StackNavigationViewStyle())
+        
     }
 }
 

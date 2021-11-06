@@ -214,6 +214,13 @@ class ContentModel: ObservableObject {
      Determines whether or not there is a next lesson
      */
     func hasNextLesson() -> Bool {
+        
+        // Ensure currentModule exists, so we can safely force unwrap
+        guard currentModule != nil else {
+            // Says there is no next lesson
+            return false
+        }
+        
         // If there is still another lesson, then we return true/ false here 
         return (currentLessonIndex + 1 < currentModule!.content.lessons.count)
         

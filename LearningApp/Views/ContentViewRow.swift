@@ -13,9 +13,25 @@ struct ContentViewRow: View {
     
     var index: Int
     
+    /*
+     Make this a computed property to safely unwrap it, and avoid index out of range
+     */
+    var lesson: Lesson {
+        
+        // If the passed-in index is less than the current count
+        if model.currentModule != nil &&
+            index < model.currentModule!.content.lessons.count {
+            return model.currentModule!.content.lessons[index]
+        }
+        else {
+            return Lesson(id: 0, title: "", video: "", duration: "", explanation: "")
+        }
+        
+    }
+    
     var body: some View {
         // Create a local lesson
-        let lesson = model.currentModule!.content.lessons[index]
+//        let lesson = model.currentModule!.content.lessons[index]
         
         // Lesson card
         ZStack(alignment: .leading) {
