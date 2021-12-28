@@ -6,8 +6,11 @@
 //
 
 import Foundation
+import Firebase
 
 class ContentModel: ObservableObject {
+    let db = Firestore.firestore()
+    
     // Stores our list of modules
     @Published var modules = [Module]() // Initialize into empty list of Modules, which we load later
     
@@ -36,18 +39,75 @@ class ContentModel: ObservableObject {
     
     init() {
         // Parse the local data, and append to the modules property
-        getLocalData()
+//        getLocalData()
+        getLocalStyles()
+        
+        // Get modules from the database
+        getModulesFromDatabase()
         
         // Also call the remote data
-        getRemoteData()
+//        getRemoteData()
     }
     
     // MARK: - Data Methods
+    
+    func getModulesFromDatabase() {
+        // Specifiy path
+        let collection = db.collection("modules")
+        
+        // Get documents in modules collection
+        collection.getDocuments { snapshot, error in
+            if error == nil && snapshot != nil {
+                // Create new array for the modules
+                var modules = [Module]()
+                
+                // Loop through returned documents
+                for doc in snapshot!.documents {
+                    // Create new module instance
+                    var module = Module()
+                    
+                    // Parse document into module properties
+                    module.id = doc["id"] as? String ?? UUID().uuidString
+                    module.category = doc["category"] as? String ?? ""
+                    
+                    // Parse the content map
+                    let contentMap = doc["content"] as! [String: Any]
+                    
+                    module.content.id = contentMap["id"] as? String ?? ""
+                    module.content.description = contentMap["description"] as? String ?? ""
+                    module.content.image = contentMap["image"] as? String ?? ""
+                    module.content.time = contentMap["time"] as? String ?? ""
+                    
+                    // Parse the test content
+                    let testMap = doc["test"] as! [String: Any]
+                    
+                    module.test.id = testMap["id"] as? String ?? ""
+                    module.test.image = testMap["image"] as? String ?? ""
+                    module.test.time = testMap["time"] as? String ?? ""
+                    
+                    
+                    // Add to modules array
+                    modules.append(module)
+                    
+                }
+                
+                // Update UI code via the main thread
+                DispatchQueue.main.async {
+                    // Assign modules to the published property
+                    self.modules = modules
+                }
+                
+                
+            }
+            
+        }
+    }
     
     func getLocalData() {
         // Parses the local JSON file
         // Get URL to the local JSON object
         let jsonUrl = Bundle.main.url(forResource: "data", withExtension: "json")
+        
         
         do {
             // Read a file into a data object
@@ -83,6 +143,26 @@ class ContentModel: ObservableObject {
         }
     }
     
+    /*
+     Parses the HTML/ CSS as needed
+     */
+    func getLocalStyles() {
+        
+        // Parse the style
+        let styleUrl = Bundle.main.url(forResource: "style", withExtension: "html")
+
+        // Try to decode the style
+        do {
+            // Read the file into a data object
+            let styleData = try Data(contentsOf: styleUrl!)
+            
+            self.styleData = styleData
+        }
+        catch {
+            // Log error
+            print("Couldn't parse style data")
+        }
+    }
     
     func getRemoteData() {
         
@@ -144,7 +224,7 @@ class ContentModel: ObservableObject {
     /*
      Sets the current module, and finds the index for this module as well
      */
-    func beginModule(_ moduleid: Int) {
+    func beginModule(_ moduleid: String) {
         
         // Find index for this module ID
         for index in 0..<modules.count {
@@ -229,7 +309,7 @@ class ContentModel: ObservableObject {
     /*
      Sets the current module, and the first question
      */
-    func beginTest(_ moduleId:Int) {
+    func beginTest(_ moduleId:String) {
         
         // Set the current module
         beginModule(moduleId)

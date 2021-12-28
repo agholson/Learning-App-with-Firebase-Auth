@@ -37,7 +37,8 @@ struct HomeView: View {
                                         .onAppear(perform: {
                                             model.beginModule(module.id)
                                         }),
-                                    tag: module.id,
+                                    // Need to get the Integer value of our String for use in the tag
+                                    tag: module.id.hash,
                                     selection: $model.currentContentSelected, // Make binding here that matches tag
                                     label: {
                                         // If user clicks on the learning card, then that's the destination
@@ -53,7 +54,7 @@ struct HomeView: View {
                                         .onAppear(perform: {
                                             model.beginTest(module.id)
                                         }),
-                                    tag: module.id,
+                                    tag: module.id.hash,
                                     selection: $model.currentTestSelected, // Make binding here that matches tag
                                     label: {
                                         HomeViewRow(image: module.test.image, title: "\(module.category) Test", description: module.test.description, count: "\(module.test.questions.count) questions", time: module.test.time)
