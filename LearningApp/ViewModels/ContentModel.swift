@@ -43,7 +43,7 @@ class ContentModel: ObservableObject {
         getLocalStyles()
         
         // Get modules from the database
-        getModulesFromDatabase()
+        getModules()
         
         // Also call the remote data
 //        getRemoteData()
@@ -51,7 +51,104 @@ class ContentModel: ObservableObject {
     
     // MARK: - Data Methods
     
-    func getModulesFromDatabase() {
+    /*
+     Gets our lessons from the database and sets it for the module in question
+     
+     Also uses a completion handler, which allows us to ensure this code executes first. We wait for all results from the
+     database before trying to set the module.
+     */
+    func getLessons(module: Module, completion: @escaping () -> Void) {
+        
+        // Specify path
+        let collection = db.collection("modules").document(module.id).collection("lessons")
+        
+        // Get documents
+        collection.getDocuments { querySnapshot, error in
+            // Ensure no errors, and documents returned
+            if error == nil && querySnapshot != nil {
+                
+                // Create an array to track the lessons
+                var lessons = [Lesson]()
+                
+                // Loop through the documents in the snapshot and build an array of lessons
+                for doc in querySnapshot!.documents {
+                    var lesson = Lesson()
+                    
+                    lesson.id = doc["id"] as? String ?? UUID().uuidString
+                    lesson.title = doc["title"] as? String ?? ""
+                    lesson.video = doc["video"] as? String ?? ""
+                    lesson.duration = doc["duration"] as? String ?? ""
+                    lesson.explanation = doc["explanation"] as? String ?? ""
+                    
+                    // Add lesson to the array
+                    lessons.append(lesson)
+                }
+                
+                // Cannot do this, because the module passed in is a struct/ a let constant copy of the struct
+                // Versus passing in a class, we would pass the reference of that class allowing us to change it
+                // Make these lessons belong to the correct module
+//                module.content.lessons = lessons
+                
+                // Determine the module we want to change
+                for (index, value) in self.modules.enumerated() {
+                    // If this is the ID of the module we wanted to add the lessons to, then we can use this
+                    if value.id == module.id {
+                        // Update this particular module with the lessons
+                        self.modules[index].content.lessons = lessons
+                        
+                        // Call the completion closure
+                        completion() 
+                    }
+                }
+                
+            }
+        }
+        
+    }
+    
+    func getQuestions(module: Module, completion: @escaping () -> Void) {
+        // Define the path to the collection
+        let collection = db.collection("modules").document(module.id).collection("questions")
+        
+        // Get all the documents in the questions collection
+        collection.getDocuments { querySnapshot, error in
+            // Only process this code, if the querySnapshot has documents, and no errors
+            if querySnapshot != nil && error == nil {
+                // Setup a questions array to hold the returned questions
+                var questions = [Question]()
+                // Loop through all the documents
+                for doc in querySnapshot!.documents {
+                    var question = Question()
+                    
+                    question.id = doc["id"] as? String ?? UUID().uuidString
+                    question.answers = doc["questions"] as? [String] ?? [String]()
+                    question.content = doc["content"] as? String ?? ""
+                    question.correctIndex = doc["correctIndex"] as? Int ?? 0
+                    
+                    // Add this question to our temporary list
+                    questions.append(question)
+                    
+                }
+                
+                // Update the questions for that module
+                for (index, value) in self.modules.enumerated() {
+                    // If the ID matches of our current module, then...
+                    if value.id == module.id {
+                        // Update that specific module index with these questions
+                        self.modules[index].test.questions = questions
+                        
+                        // Call the completion handler here
+                        completion()
+                    }
+                }
+                
+                
+            }
+        }
+        
+    }
+    
+    func getModules() {
         // Specifiy path
         let collection = db.collection("modules")
         

@@ -35,7 +35,12 @@ struct HomeView: View {
                                     // When the user clicks this, we execute the code to determine our current module
                                     destination: ContentView()
                                         .onAppear(perform: {
-                                            model.beginModule(module.id)
+                                            // Get the lessons here
+                                            model.getLessons(module: module) {
+                                                // Launch the lessons view only after we fetch the lessons
+                                                model.beginModule(module.id)
+                                            }
+                                            
                                         }),
                                     // Need to get the Integer value of our String for use in the tag
                                     tag: module.id.hash,
@@ -52,7 +57,12 @@ struct HomeView: View {
                                     // When the user clicks this, we execute the code to determine our current module
                                     destination: TestView()
                                         .onAppear(perform: {
-                                            model.beginTest(module.id)
+                                            // Set the questions for the chosen module
+                                            model.getQuestions(module: module) {
+                                                // Then set the model's current module in order to switch screens
+                                                model.beginTest(module.id)
+                                            }
+                                           
                                         }),
                                     tag: module.id.hash,
                                     selection: $model.currentTestSelected, // Make binding here that matches tag
@@ -60,16 +70,6 @@ struct HomeView: View {
                                         HomeViewRow(image: module.test.image, title: "\(module.category) Test", description: module.test.description, count: "\(module.test.questions.count) questions", time: module.test.time)
                                         
                                     })
-//                                NavigationLink(
-//                                    tag: module.id,
-//                                    selection: $model.currentTestSelected,
-//                                    destination:
-//                                        TestView()
-//                                        .onAppear(perform: model.beginTest(module.id))
-//                                ) {
-//                                    HomeViewRow(image: module.test.image, title: "\(module.category) Test", description: module.test.description, count: "\(module.test.questions.count) questions", time: module.test.time)
-//                                }
-                                
                                 
                             }
                                 .padding(.bottom, 10)
