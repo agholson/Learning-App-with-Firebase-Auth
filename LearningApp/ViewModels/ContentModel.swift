@@ -38,15 +38,7 @@ class ContentModel: ObservableObject {
     var styleData: Data?
     
     init() {
-        // Parse the local data, and append to the modules property
-//        getLocalData()
-        getLocalStyles()
         
-        // Get modules from the database
-        getModules()
-        
-        // Also call the remote data
-//        getRemoteData()
     }
     
     // MARK: - Data Methods
@@ -58,6 +50,9 @@ class ContentModel: ObservableObject {
      database before trying to set the module.
      */
     func getLessons(module: Module, completion: @escaping () -> Void) {
+        
+        // Parse the local data, and append to the modules property
+        getLocalStyles()
         
         // Specify path
         let collection = db.collection("modules").document(module.id).collection("lessons")
