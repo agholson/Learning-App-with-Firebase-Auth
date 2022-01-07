@@ -57,3 +57,15 @@ struct Question : Decodable, Identifiable {
     var correctIndex: Int = 0
     var answers: [String] = [String]()
 }
+
+/*
+ Represents our user for interactions with the Firestore database
+ 
+ Use a class, so we reference the same object in memory versus creating multiple copies with struct
+ */
+class User {
+    var name: String = ""
+    var lastModule: Int? // Tracks the last module the user was using
+    var lastLesson: Int?
+    var lastQuestion: Int?
+}

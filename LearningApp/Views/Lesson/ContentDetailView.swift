@@ -54,6 +54,9 @@ struct ContentDetailView: View {
                 // Show the completed lessons Button to bounce back out
                 Button(action: {
                     
+                    // Call nextLesson, here, so it updates the state in the database
+                    model.nextLesson()
+                    
                     // Set this to nil, so we bounce back to the home screen
                     model.currentContentSelected = nil
                     

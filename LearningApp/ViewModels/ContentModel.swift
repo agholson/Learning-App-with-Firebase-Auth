@@ -7,8 +7,13 @@
 
 import Foundation
 import Firebase
+import FirebaseAuth
 
 class ContentModel: ObservableObject {
+    
+    // Tracks whether/ not the person is logged in, then uses @Published to update all the views that use this upon change
+    @Published var loggedIn = false
+    
     let db = Firestore.firestore()
     
     // Stores our list of modules
@@ -41,7 +46,90 @@ class ContentModel: ObservableObject {
         
     }
     
+    // MARK: - Authentication Methods
+    /*
+     Determines whether/ not the current person is logged in
+     */
+    func checkLogin() {
+        
+        // If the current user is logged in, then set loggedIn to true, else false
+        loggedIn = Auth.auth().currentUser != nil ? true : false
+        
+        // If user previously logged in, then we need to get his or her last place in the app
+        if UserService.shared.user.name == "" {
+            // Then we get the user's data
+            getUserData()
+        }
+    }
+    
     // MARK: - Data Methods
+    /*
+     Saves the current state information within the app, e.g. the index data for each module/ question/ test
+     */
+    func saveData() {
+        // Only run this code if the loggedIn user existed
+        if let loggedInUser = Auth.auth().currentUser {
+            // Save the progress data locally
+            let user = UserService.shared.user
+            
+            user.lastQuestion = currentQuestionIndex
+            user.lastLesson = currentLessonIndex
+            user.lastModule = currentModuleIndex
+            
+            // Save to the database
+            let db = Firestore.firestore()
+            
+            let ref = db.collection("users").document(loggedInUser.uid)
+            
+            
+            // Use merge, so that we do not overwrite the user's name, because not included here
+            ref.setData([
+                "lastModule" : user.lastModule!,
+                "lastQuestion": user.lastQuestion!,
+                "lastLesson": user.lastLesson!
+            ],
+                merge: true
+            )
+        }
+        
+        
+        
+    }
+    
+    /*
+     Gets the metadata for the user
+     */
+    func getUserData() {
+        // Check that there's a logged in user
+        guard Auth.auth().currentUser != nil else {
+            // If nil, then return
+            return
+        }
+        
+        // Get the metadata for that user
+        let db = Firestore.firestore()
+        let ref = db.collection("users").document(Auth.auth().currentUser!.uid)
+        
+        // Fetch the document for this user
+        ref.getDocument { snapshot, error in
+            // Ensure that the error is nil and that the snapshot exists
+            guard error == nil, snapshot != nil else {
+                return
+            }
+            
+            // Parse the data into the user
+            let data = snapshot!.data()
+            // Access our one and only shared user service
+            let user = UserService.shared.user
+            
+           // Assign the name from the database to the shared name in our app
+            user.name = data?["name"] as? String ?? "" // If nil, then set this to empty
+            user.lastModule = data?["lastModule"] as? Int // Because it's already an optional property, we don't need to assign to nil 
+            user.lastLesson = data?["lastLesson"] as? Int
+            user.lastQuestion = data?["lastQuestion"] as? Int
+        }
+        
+    }
     
     /*
      Gets our lessons from the database and sets it for the module in question
@@ -143,7 +231,14 @@ class ContentModel: ObservableObject {
         
     }
     
-    func getModules() {
+    /*
+     Gets all of the modules and parses each one
+     */
+    func getDatabaseData() {
+        
+        // Parse the styles
+        getLocalStyles()
+        
         // Specifiy path
         let collection = db.collection("modules")
         
@@ -361,7 +456,7 @@ class ContentModel: ObservableObject {
     }
     
     /*
-     Advances to the next lesson, if there is one
+     Advances to the next lesson, if there is one, also saves our progress
      */
     func nextLesson() {
         // Advance the lesson
@@ -379,6 +474,9 @@ class ContentModel: ObservableObject {
             currentLessonIndex = 0
             currentLesson = nil
         }
+        
+        // Save progress to the database
+        saveData()
         
     }
     
@@ -420,7 +518,7 @@ class ContentModel: ObservableObject {
     }
     
     /*
-     Proceeds to the next test question, if there was one available
+     Proceeds to the next test question, if there was one available, then saves the progress to the database
      */
     func nextQuestion() {
         
@@ -444,6 +542,8 @@ class ContentModel: ObservableObject {
             currentQuestion = nil
         }
         
+        // Save progress to the database
+        saveData()
         
     }
     
