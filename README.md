@@ -9,6 +9,21 @@ Displays how to make a learning app with Swift, iOS's programming language. Base
 - Displays videos from external websites within the app
 - Grades students for right answers defined in the JSON configuration file
 
+## Database Interactions
+### Publisher Notifications - App Entering the Background
+In iOS, we can detect certain events, such as the user quitting the app, or making it go into the background. These are called
+Publisher notifications, and once certain ones occur, we can respond to them. 
+
+Here is how you can make the database save, as soon as the app enters the background state. You attach the `.onReceive` 
+modifier to your `View` in order to do this. 
+```
+// Listens for Published events, like the user making the app go into the background, once this happens, we save to the database
+.onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
+    // Save progress to the database, when app moves to the background
+    model.saveData(writeToDatabase: true)
+}
+```
+
 ## Design
 ### HomeView
 This view displays a list of learning modules. Each learning module contains a learning and test component. 

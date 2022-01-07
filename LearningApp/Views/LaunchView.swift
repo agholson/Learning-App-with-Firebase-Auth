@@ -34,6 +34,11 @@ struct LaunchView: View {
             .onAppear {
                 model.getDatabaseData()
             }
+            // Listens for Published events, like the user making the app go into the background, once this happens, we save to the database
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
+                // Save progress to the database, when app moves to the background
+                model.saveData(writeToDatabase: true)
+            }
         }
         // MARK: - Login/ Create Account Screen
         // Else prompt user to login, or create an account

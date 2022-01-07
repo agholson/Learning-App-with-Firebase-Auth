@@ -66,7 +66,7 @@ class ContentModel: ObservableObject {
     /*
      Saves the current state information within the app, e.g. the index data for each module/ question/ test
      */
-    func saveData() {
+    func saveData(writeToDatabase: Bool = false) {
         // Only run this code if the loggedIn user existed
         if let loggedInUser = Auth.auth().currentUser {
             // Save the progress data locally
@@ -81,15 +81,17 @@ class ContentModel: ObservableObject {
             
             let ref = db.collection("users").document(loggedInUser.uid)
             
-            
-            // Use merge, so that we do not overwrite the user's name, because not included here
-            ref.setData([
-                "lastModule" : user.lastModule!,
-                "lastQuestion": user.lastQuestion!,
-                "lastLesson": user.lastLesson!
-            ],
-                merge: true
-            )
+            // Writes to the database, if the user specified that
+            if writeToDatabase {
+                // Use merge, so that we do not overwrite the user's name, because not included here
+                ref.setData([
+                    "lastModule" : user.lastModule ?? NSNull(),
+                    "lastQuestion": user.lastQuestion ?? NSNull(),
+                    "lastLesson": user.lastLesson ?? NSNull()
+                ],
+                    merge: true
+                )
+            }
         }
         
         
