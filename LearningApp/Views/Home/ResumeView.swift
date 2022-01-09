@@ -51,7 +51,7 @@ struct ResumeView: View {
                             // Set the module, then go to the beginLesson
                             model.beginLesson(user.lastLesson!)
                         }
-                        \
+                        
                     })
             }
             // Else go to the TestView
