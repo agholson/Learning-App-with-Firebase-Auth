@@ -12,15 +12,49 @@ struct HomeView: View {
     // Access our shared model here
     @EnvironmentObject var model: ContentModel
     
+    // Reference our singleton user
+    let user = UserService.shared.user
+    
+    // Computed property that determines the text to display for the end user e.g. Get Started or Welcome Back
+    var navTitle: String {
+        // If these properties were set, then it means the user has already logged in
+        // These properties only get set at a later state within the app
+        if user.lastLesson != nil || user.lastQuestion != nil {
+            
+            // If the user name fits on the screen, we show that
+            if user.name.count < 9 {
+                return "Welcome Back \(user.name.capitalized)"
+            }
+            // Else show the standard welcome
+            else {
+                return "Welcome Back"
+            }
+        }
+        else {
+            return "Get Started"
+        }
+    }
     
     var body: some View {
         
         NavigationView {
             VStack(alignment: .leading) {
                 
-                Text("What do you want to do today?")
-                    .padding(.leading, 20)
-                
+                // Check, if we should display the button for where the user was last set upon
+                // If the lastLesson is nil, then user hasn't started any yet
+                // If the lastLesson = 0, then the user finished the module
+                if user.lastLesson != nil && user.lastLesson ?? 0 > 0 ||
+                    user.lastQuestion != nil && user.lastQuestion ?? 0 != 0 {
+                    
+                    // Show the resumed view
+                    ResumeView()
+                        .padding(.horizontal)
+                }
+                // Else the user left off on the homescreen 
+                else {
+                    Text("What do you want to do today?")
+                        .padding(.leading, 20)
+                }
                 ScrollView {
                     // Aligns elements vertically, but only loads what appears on screen
                     LazyVStack {
@@ -82,7 +116,8 @@ struct HomeView: View {
                     
                 }
             }
-            .navigationTitle("Get Started")
+            // Use a computed property that changes depending on the user coming back to the app/ not
+            .navigationTitle(navTitle)
             // Executes this code as soon as value changed, after user returns from a nested view. Prevents a bug with on-loads from occurring
             .onChange(of: model.currentContentSelected) { changedValue in
                 if changedValue == nil {

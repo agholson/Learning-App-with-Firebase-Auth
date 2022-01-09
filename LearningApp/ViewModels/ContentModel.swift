@@ -64,7 +64,9 @@ class ContentModel: ObservableObject {
     
     // MARK: - Data Methods
     /*
-     Saves the current state information within the app, e.g. the index data for each module/ question/ test
+     Saves the current state information within the app, e.g. the index data for each module/ question/ test.
+     
+     This saves it for every step locally. Then, once the user finishes with the app, we save it to the database
      */
     func saveData(writeToDatabase: Bool = false) {
         // Only run this code if the loggedIn user existed
@@ -76,13 +78,12 @@ class ContentModel: ObservableObject {
             user.lastLesson = currentLessonIndex
             user.lastModule = currentModuleIndex
             
-            // Save to the database
-            let db = Firestore.firestore()
-            
-            let ref = db.collection("users").document(loggedInUser.uid)
-            
             // Writes to the database, if the user specified that
             if writeToDatabase {
+                // Save to the database
+                let db = Firestore.firestore()
+                
+                let ref = db.collection("users").document(loggedInUser.uid)
                 // Use merge, so that we do not overwrite the user's name, because not included here
                 ref.setData([
                     "lastModule" : user.lastModule ?? NSNull(),
@@ -440,6 +441,9 @@ class ContentModel: ObservableObject {
      */
     func beginLesson(_ lessonIndex:Int) {
         
+        // Reset the questionsIndex, because the user is starting a lesson now
+        currentQuestionIndex = 0
+        
         // Check that the lesson index is in the range of module lessons
         if lessonIndex < currentModule!.content.lessons.count {
             
@@ -502,6 +506,9 @@ class ContentModel: ObservableObject {
      Sets the current module, and the first question
      */
     func beginTest(_ moduleId:String) {
+        
+        // Reset the current lesson index, because the user is beginning a test
+        currentLessonIndex = 0
         
         // Set the current module
         beginModule(moduleId)
